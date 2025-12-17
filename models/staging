@@ -1,21 +1,57 @@
 with source as (
-
     select *
-    from {{ source('gz_raw_data', 'raw_gz_sales') }}
-
+    from {{ source('gz_raw_data', 'raw_gz_product') }}
 ),
 
 renamed as (
-
     select
-        date_date,
-        orders_id,
-        pdt_id,
-        revenue,
-        quantity
+        pdt_id     as products_id,
+        pdt_name,
+        category,
+        price
     from source
+)
+
+select *
+from renamed
+
 
 )
 
 select *
 from renamed
+
+with source as (
+    select *
+    from {{ source('gz_raw_data', 'raw_gz_product') }}
+),
+
+renamed as (
+    select
+        pdt_id as products_id,                        -- kolon ismini değiştirdik
+        pdt_name,
+        category,
+        CAST(purchse_price AS FLOAT64) as purchase_price,  -- hem isim hem veri tipi düzeltildi
+        price
+    from source
+)
+
+select *
+from renamed
+with source as (
+    select *
+    from {{ source('gz_raw_data', 'raw_gz_ship') }}
+),
+
+cleaned as (
+    select
+        ship_id,
+        order_id,
+        ship_date,
+        carrier,
+        CAST(shipping_fee AS FLOAT64) as ship_cost   -- sadece bir sütun, FLOAT64
+    from source
+)
+
+select *
+from cleaned
