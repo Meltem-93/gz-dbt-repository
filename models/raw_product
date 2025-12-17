@@ -1,0 +1,17 @@
+with source as (
+    select *
+    from {{ source('gz_raw_data', 'raw_gz_product') }}
+),
+
+renamed as (
+    select
+        pdt_id as products_id,
+        pdt_name,
+        category,
+        CAST(purchse_price AS FLOAT64) as purchase_price,
+        price
+    from source
+)
+
+select *
+from renamed
