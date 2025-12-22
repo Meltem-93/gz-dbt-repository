@@ -1,14 +1,9 @@
-WITH source AS (
-    SELECT *
-    FROM {{ source('raw', 'product') }}
-),
-
-renamed AS (
-    SELECT
-        products_id,
-        CAST(purchse_price AS FLOAT64) AS purchase_price  -- yeniden adlandır ve tür dönüştür
-    FROM source
-)
-
-SELECT *
-FROM renamed
+- name: product
+identifier: raw_gz_product
+description: Greenweez'in ürünleri
+columns:
+- name: products_id
+description: Birincil anahtar
+tests:
+- unique
+- not_null
