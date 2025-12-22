@@ -1,6 +1,17 @@
-SELECT
-    orders_id,
-    date_date,
-    revenue,
-    quantity
-FROM {{ source('raw', 'sales') }}
+WITH source AS (
+    SELECT *
+    FROM {{ source('raw', 'sales') }}
+),
+
+renamed AS (
+    SELECT
+        date_date,
+        orders_id,
+        pdt_id AS products_id,   -- yeniden adlandırma
+        revenue,
+        quantity
+    FROM source
+)
+
+SELECT *
+FROM renamed
