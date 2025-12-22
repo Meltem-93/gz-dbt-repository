@@ -1,4 +1,4 @@
 SELECT
     products_id,
-    purchase_price
+    purchSE_PRICE
 FROM {{ source('raw', 'product') }}
